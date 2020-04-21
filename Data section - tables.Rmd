@@ -1,0 +1,92 @@
+---
+title: "Data section"
+author: "Abby Hanna"
+date: "4/19/2020"
+output: html_document
+---
+
+
+```{r}
+library(tidyr)
+library(readr)
+```
+
+```{r insert BRT data for cities}
+
+# Sao Paulo
+brtdata_sp_csv <- read_delim("brtdata-sp_csv.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+View(brtdata_sp_csv)
+
+#Belo Horizonte
+brtdata_BH_csv <- read_delim("brtdata-BH_csv.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+View(brtdata_BH_csv)
+
+#Porto Alegre
+brtdata_PA_csv <- read_delim("brtdata-PA_csv.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+View(brtdata_PA_csv)
+
+#Recife
+brtdata_recife_csv <- read_delim("brtdata-recife_csv.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+View(brtdata_recife_csv)
+```
+
+
+```{r insert pollutant and weather data}
+#Manaus, 2008 (before World Cup)
+Manaus_2008_pollutant_data <- read_csv("AMAZE08_AMS_Harvard_MassConcentrations_MARTIN.csv")
+View(Manaus_2008_pollutant_data)
+
+#Belo Horizonte, 2015 (after World Cup)
+BH_polls_2015 <- read_delim("BH_2015_pollutants_csv/Estação Centro Av Contorno-Table 1.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+View(BH_polls_2015)
+
+#Sao Paulo, Belo Horizonte, Recife, Porto Alegre 1995-2016
+pollutants_bh_pa_csv_1995_2016 <- read_delim("polls_bh_pa_csv_1995_2016.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+View(pollutants_bh_pa_csv_1995_2016)
+
+#Sao Paulo, 2015 (after World Cup)
+sao_paulo_2014_pollutants_csv <- read_delim("sao_paulo_2014_pollutants_csv.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+View(sao_paulo_2014_pollutants_csv)
+
+precipitation_bra <- read_csv("~/Downloads/precipitation_bra.csv")
+View(precipitation_bra)
+
+```
+
+
+
+
+
+
+
+
+```{r clean all data}
+
+cleandata_BRT_sp <- brtdata_sp_csv[complete.cases(brtdata_sp_csv),]
+View(cleandata_BRT_sp)
+
+cleandata_BRT_recife <- brtdata_recife_csv[complete.cases(brtdata_recife_csv),]
+View(cleandata_BRT_recife)
+
+cleandata_BRT_BH <- brtdata_BH_csv[complete.cases(brtdata_BH_csv),]
+View(cleandata_BRT_BH)
+
+cleandata_BRT_PA <- brtdata_PA_csv[complete.cases(brtdata_PA_csv),]
+View(cleandata_BRT_PA)
+
+cleandata_manaus_AQ <- Manaus_2008_pollutant_data[complete.cases(Manaus_2008_pollutant_data),]
+View(cleandata_manaus_AQ)
+
+cleandata_SP_BH_R_PA_AQ <- pollutants_bh_pa_csv_1995_2016[complete.cases(pollutants_bh_pa_csv_1995_2016),]
+
+```
+
+
+
