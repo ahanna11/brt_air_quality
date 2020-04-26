@@ -58,10 +58,10 @@ View(sao_paulo_2014_pollutants_csv)
 precipitation_bra <- read_csv("~/Downloads/precipitation_bra.csv")
 View(precipitation_bra)
 
+hourly_weather_surface_brazil_southeast_region <- read_csv("~/Downloads/hourly-weather-surface-brazil-southeast-region.zip")
+View(hourly_weather_surface_brazil_southeast_region)
+
 ```
-
-
-
 
 
 
@@ -85,6 +85,8 @@ cleandata_manaus_AQ <- Manaus_2008_pollutant_data[complete.cases(Manaus_2008_pol
 View(cleandata_manaus_AQ)
 
 cleandata_SP_BH_R_PA_AQ <- pollutants_bh_pa_csv_1995_2016[complete.cases(pollutants_bh_pa_csv_1995_2016),]
+
+cleandata_precip_bra <- precipitation_bra[complete.cases(precipitation_bra),]
 
 ```
 
