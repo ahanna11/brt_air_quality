@@ -9,20 +9,54 @@ output: html_document
 library(readr)
 library(magrittr)
 library(tidyverse)
+library(formattable)
+library(ggplot2)
 ```
 
 ```{r BRT data}
 # Table 1 - BRT data for each city - combined statistics in csv file
-brt_data_cities <- read_delim("brt_data_cities.csv", 
+brt_data <- read_delim("~/Desktop/brt_air_quality/brt_data.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
-View(brt_data_cities)
+formattable(brt_data)
 ```
 
-```{r pollutant data, Table 2 }
+```{r pollutant data, Table 2}
 # Number of recorded pollutants at different stations in the four cities from 1995-2016
 library(readr)
 use_pollutants <- read_delim("use_pollutants.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
-View(use_pollutants)
+pollutant_data <- as_tibble(use_pollutants)
+View(pollutant_data)
+clean_pollution_data <- pollutant_data[complete.cases(pollutant_data),]
+formattable(clean_pollution_data)
+```
+
+```{r Table 3}
+# Belo Horizonte pollutants, 2015
+
+closer_bh_pollutants_2015 <- read_delim("~/Desktop/brt_air_quality/BH_2015_pollutants_csv/Estação Centro Av Contorno-Table 1.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE,)
+bh_poll_tibble <- as_data_frame(closer_bh_pollutants_2015)
+View(bh_poll_tibble)
+
+figure_1 <- ggplot(bh_poll_tibble, aes(x=`Data de Medição`, y=`Refinaria Gabriel Passos`)) + 
+  geom_boxplot(outlier.colour="red", outlier.shape=8,
+                outlier.size=4)
+View(figure_1)
+
+
+
+  
+```
+
+
+```{r}
+
+# Sao Paulo pollutants, 2015
+
+closer_sp_pollutants_2014 <- read_delim("~/Desktop/brt_air_quality/pollutants/sao_paulo_2014_pollutants_csv.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+View(closer_sp_pollutants_2014)
+
 ```
 
