@@ -13,22 +13,16 @@ library(tidyverse)
 
 ```{r BRT data}
 # Table 1 - BRT data for each city - combined statistics in csv file
-
-
+brt_data_cities <- read_delim("brt_data_cities.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+View(brt_data_cities)
 ```
 
-```{r pollutant data, Tables 2 and 3}
-
-historicas_series <- read_delim("historicas_series.csv", 
+```{r pollutant data, Table 2 }
+# Number of recorded pollutants at different stations in the four cities from 1995-2016
+library(readr)
+use_pollutants <- read_delim("use_pollutants.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
-historicas_series_2 <- read_delim("pollutants/historicas_series_2.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
-combined_data <- merge(historicas_series, historicas_series_2)
- 
- 
-Table_2 <- combined_data %>%
-  select(combined_data$Regiao, filter (-`Curitiba - PR`, -`Grande Vitoria - ES`, -`Rio de Janeiro - RJ`, -`Salvador - BA`))
-
+View(use_pollutants)
 ```
 
