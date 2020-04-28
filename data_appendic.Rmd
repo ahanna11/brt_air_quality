@@ -28,61 +28,66 @@ st_options(plain.ascii = F,
 # The datasets used directly by the final analysis are saved in `processed-data/` at the end of this file.
 
 
-```{r insert BRT data for  4 cities}
+## Dataset description
+**Citation:** Put citation here in APA or other consistent format that you will use throughout the project. Include a hyperlink if applicable.  
+**DOI:** If the dataset has a documention identified (DOI) assigned put it here.  
+**Date Downloaded:** March 25, 2020  
+**Filename(s):** brt_data.csv 
+**Unit of observation:** What distinguishes different rows in your dataset?  
+**Dates covered:** 2014-2019  
 
+### To obtain a copy
+
+
+### Importable version (if necessary)
+
+
+### Variable descriptions
+
+Create a bullet list with the name of each variable in the dataset followed by any information the user would need to understand it.
+
+- **variable_name:** 
+- **variable_name:**
+
+### Data import code and summary
+
+```{r}
 # Sao Paulo
 brtdata_sp_csv <- read_delim("brtdata-sp_csv.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
-
-
-
-
-
-
 
 #Belo Horizonte
 brtdata_BH_csv <- read_delim("brtdata-BH_csv.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
 
-
-
-
 #Porto Alegre
 brtdata_PA_csv <- read_delim("brtdata-PA_csv.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
-
-
-
 
 #Recife
 brtdata_recife_csv <- read_delim("brtdata-recife_csv.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
 
-
-
-
-
-
-
-
+`export_summary_table(dfSummary(brt_data))`
 ```
 
 
+`export_summary_table(dfSummary(dataset_name))`
+
+# Data Processing and Combination
+*This section should include a discussion of the processing and merging steps needed to create your basic data. The code to implement these steps should be included in chunks in this section. Once the final merged data has been created, you should use the dfSummary function again to summarize the data you will be using. You should also save a file containing all the objects you will use in your final analysis to the processed_data folder.*
+
+# Analysis Variables
+
+This section should include a description of all the variables that are used in your final analysis. At the end of the section, you should save all of these variables in the processed_data folder of your repository.
+
+# Discussion of Data
+
+*This section should include a discussion of any data patterns you notice based on the summaries created in the code above.*
+
 ```{r insert pollutant data}
 
-#Belo Horizonte, 2015 (after World Cup)
-BH_polls_2015 <- read_delim("BH_2015_pollutants_csv/Estação Centro Av Contorno-Table 1.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
 
-
-#Sao Paulo, Belo Horizonte, Recife, Porto Alegre 1995-2016
-pollutants_bh_pa_csv_1995_2016 <- read_delim("polls_bh_pa_csv_1995_2016.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
-
-#Sao Paulo, 2015 (after World Cup)
-sao_paulo_2014_pollutants_csv <- read_delim("sao_paulo_2014_pollutants_csv.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
 
 ```
 
