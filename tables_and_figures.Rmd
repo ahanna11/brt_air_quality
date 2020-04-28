@@ -9,8 +9,8 @@ output: html_document
 library(readr)
 library(magrittr)
 library(tidyverse)
-library(formattable)
 library(ggplot2)
+library(formattable)
 ```
 
 ```{r BRT data}
@@ -31,21 +31,20 @@ clean_pollution_data <- pollutant_data[complete.cases(pollutant_data),]
 formattable(clean_pollution_data)
 ```
 
-```{r Table 3}
-# Belo Horizonte pollutants, 2015
+```{r Table 3-5, transport/emissions data}
+# Sao Paulo 
+sp_transportation <- read_csv("são-paulo-transportation.csv")
+Sao_Paulo_figure <- formattable(sp_transportation)
 
-closer_bh_pollutants_2015 <- read_delim("~/Desktop/brt_air_quality/BH_2015_pollutants_csv/Estação Centro Av Contorno-Table 1.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE,)
-bh_poll_tibble <- as_data_frame(closer_bh_pollutants_2015)
-View(bh_poll_tibble)
-
-figure_1 <- ggplot(bh_poll_tibble, aes(x=`Data de Medição`, y=`Refinaria Gabriel Passos`)) + 
-  geom_boxplot(outlier.colour="red", outlier.shape=8,
-                outlier.size=4)
-View(figure_1)
+  
+#Belo Horizonte
+belo_horizonte_transportation <- read_csv("belo-horizonte-transportation.csv")
+Belo_Horizonte_figure <- formattable(belo_horizonte_transportation)
 
 
-
+#Porto Alegre
+porto_alegre_transportation <- read_csv("porto-alegre-transportation.csv")
+Porto_Alegre_figure <- formattable(porto_alegre_transportation)
   
 ```
 
