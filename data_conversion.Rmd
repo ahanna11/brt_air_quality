@@ -1,0 +1,47 @@
+---
+title: "Data conversion supplement"
+author: "Susan Sayre"
+date: "4/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+```
+
+
+```{r import data}
+air_data <- read_csv("raw-data/cetesb.csv", 
+    col_types = cols(BENZENO = col_double(), 
+        CO = col_double(), MP2.5 = col_double(), 
+        SO2 = col_double(), TOLUENO = col_double(), 
+        TRS = col_double())) %>% 
+  mutate(year = year(time),
+         month = month(time),
+         day = day(time),
+         hour = hour(time),
+         date = as.Date(str_c(year,"-", month, "-", day),"%Y-%m-%d")) %>% 
+  select(id, hour, ozone = O3, date) 
+
+stations <- read_csv(gzfile("raw-data/estacoes-cetesb.csv.gz"))
+
+sao_paulo_stations <- stations %>% 
+  filter(Municipio == "SAO PAULO" & Qualidade == "N1 - BOA" & POLUENTE == "O3") %>% 
+  select(id = ID, longitude = x, latitude = y, municipality = Municipio)
+
+sp_ozone_data_hourly <- sao_paulo_stations %>% 
+  left_join(air_data)
+
+write_csv(sp_ozone_data_hourly, "processed-data/sp_ozone_hourly.csv")
+
+sp_ozone_daily <- sp_ozone_data_hourly %>% 
+  group_by(date) %>% 
+  summarize(mean_ozone = mean(ozone, na.rm = T), 
+            max_ozone = max(ozone, na.rm = T),
+            min_ozone = min(ozone, na.rm = T))
+
+write_csv(sp_ozone_daily, "processed-data/sp_ozone_daily.csv")
+  
+```
