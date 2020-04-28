@@ -102,6 +102,9 @@ View(cleandata_BRT_BH)
 cleandata_BRT_PA <- brtdata_PA_csv[complete.cases(brtdata_PA_csv),]
 View(cleandata_BRT_PA)
 
+#https://onlinelibrary.wiley.com/doi/pdf/10.1002/atr.5670370202 
+
+
 ```
 
 
