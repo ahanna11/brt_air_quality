@@ -1,0 +1,29 @@
+---
+title: "blah"
+author: "Abby Hanna"
+date: "4/28/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+openaq <- read_delim("openaq(1).csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+head(openaq)
+
+sp_pollutants_2017 <- openaq %>%
+  as_data_frame %>%
+  filter(openaq$City== "Sao Paulo")
+
+Sp_2017_table <- arrange(sp_pollutants_2017) 
+```
+
+```{r}
+formattable(Sp_2017_table, 
+            align = c("l",rep("r", NCOL(Sp_2017_table) - 1)),
+            list(`City` = formatter("span", style = ~ style(color = "green", font.weight = "bold")),
+                 `Value` = formatter("span",
+                                           style = x ~ style(color = ifelse(x < 70, "green", "red")))))
+```
+
