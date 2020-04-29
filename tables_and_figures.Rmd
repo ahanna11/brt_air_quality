@@ -35,8 +35,15 @@ Growth_rates <- ggplot(aes(x = Pop_growth_rates$`Nome_distrito`, y = `Tx_cresc91
      col = "red",  xlab = "District Name", ylab = "Population growth")
 ```
 
-```{r}
 
+
+
+```{r}
+sp_climate <- air_data %>%
+  filter(city == "Sao Paulo")
+climate_all <- sudeste %>%
+  select(city, lat, lon, date, smax, smin, temp, hmdy, wdsp)
+sum(climate_all)
 ```
 
 
