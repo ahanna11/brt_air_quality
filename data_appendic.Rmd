@@ -28,93 +28,41 @@ st_options(plain.ascii = F,
 # The datasets used directly by the final analysis are saved in `processed-data/` at the end of this file.
 
 
-```{r insert BRT data for  4 cities}
-
-# Sao Paulo
-brtdata_sp_csv <- read_delim("brtdata-sp_csv.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
-
-
-
-
-
-
-#Belo Horizonte
-brtdata_BH_csv <- read_delim("brtdata-BH_csv.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
-
-
-
-#Porto Alegre
-brtdata_PA_csv <- read_delim("brtdata-PA_csv.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
-
-
-
-#Recife
-brtdata_recife_csv <- read_delim("brtdata-recife_csv.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
-
-
-
-
-
-
-
+```{r insert BRT data for SP}
+sp_transportation_2018 <- read_csv("~/Desktop/são-paulo-transportation.csv")
+View(sp_transportation_2018)
 ```
 
 
-```{r insert pollutant data}
-
-#Belo Horizonte, 2015 (after World Cup)
-BH_polls_2015 <- read_delim("BH_2015_pollutants_csv/Estação Centro Av Contorno-Table 1.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
-
-#Sao Paulo, Belo Horizonte, Recife, Porto Alegre 1995-2016
-pollutants_bh_pa_csv_1995_2016 <- read_delim("polls_bh_pa_csv_1995_2016.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
-
-#Sao Paulo, 2015 (after World Cup)
-sao_paulo_2014_pollutants_csv <- read_delim("sao_paulo_2014_pollutants_csv.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
+```{r insert pollution data SP region, 2013-2019}
+air_data <- read_csv("cetesb.csv", 
+    col_types = cols(BENZENO = col_double(), 
+        CO = col_double(), MP2.5 = col_double(), 
+        SO2 = col_double(), TOLUENO = col_double(), 
+        TRS = col_double())) %>% 
+  mutate(year = year(time),
+         month = month(time),
+         day = day(time),
+         hour = hour(time),
+         date = as.Date(str_c(year,"-", month, "-", day),"%Y-%m-%d")) %>% 
+  select(id, hour, ozone = O3, date) 
 ```
+```{r air pollution from stations}
+stations <- read_csv("estacoes-cetesb.csv")
+
+sao_paulo_stations <- stations %>% 
+  filter(Municipio == "SAO PAULO" & Qualidade == "N1 - BOA" & POLUENTE == "O3") %>% 
+  select(id = ID, longitude = x, latitude = y, municipality = Municipio)
+
+sp_ozone_data_hourly <- sao_paulo_stations %>% 
+  left_join(air_data)
 
 
-
-```{r clean BRT data}
-
-cleandata_BRT_sp <- brtdata_sp_csv[complete.cases(brtdata_sp_csv),]
-View(cleandata_BRT_sp)
-
-cleandata_BRT_recife <- brtdata_recife_csv[complete.cases(brtdata_recife_csv),]
-View(cleandata_BRT_recife)
-
-cleandata_BRT_BH <- brtdata_BH_csv[complete.cases(brtdata_BH_csv),]
-View(cleandata_BRT_BH)
-
-cleandata_BRT_PA <- brtdata_PA_csv[complete.cases(brtdata_PA_csv),]
-View(cleandata_BRT_PA)
-
-#https://onlinelibrary.wiley.com/doi/pdf/10.1002/atr.5670370202 
-
-
-```
-
-
-```{r custom BRT data table}
-
-brt_data_all_cities <- read_delim("brt_data_all_cities.csv", 
-    ";", escape_double = FALSE, col_types = cols(Indicator = col_skip()), 
-    na = "null", trim_ws = TRUE)
-# Created from BRT source data in Numbers
-
+sp_ozone_daily <- sp_ozone_data_hourly %>% 
+  group_by(sp_ozone_daily$date) %>% 
+  summarize(mean_ozone = mean(ozone, na.rm = T), 
+            max_ozone = max(ozone, na.rm = T),
+            min_ozone = min(ozone, na.rm = T))
 ```
 
 

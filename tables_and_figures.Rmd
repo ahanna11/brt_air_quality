@@ -1,5 +1,5 @@
 ---
-title: "data_sec"
+title: "Growth rates SP"
 author: "Abby Hanna"
 date: "4/25/2020"
 output:
@@ -7,61 +7,37 @@ output:
   html_document: default
 ---
 
-```{r setup, include=FALSE}
-library(readr)
-library(magrittr)
-library(tidyverse)
-library(formattable)
-library(ggplot2)
+
+
+
+```{r population data}
+
+View(population_parameters_rates_by_district)
+
+Population_data_1 <- population_parameters_rates_by_district %>%
+  select(`Nome_distrito`, `Pop_1991`, `Pop_2000`, `Pop_2010`, `Pop_2020`, `Pop/ha_1991`, `Pop/ha_2000`, `Pop/ha_2010`) 
+
+
+Pop_growth_rates <- population_parameters_rates_by_district %>%
+  select(`Nome_distrito`, `Tx_cresc91/2000`, `Tx_cresc2000/10`, `Tx_cresc2010/20`)
+
+
 ```
-
-```{r BRT data}
-# Table 1 - BRT data for each city - combined statistics in csv file
-brt_data <- read_delim("~/Desktop/brt_air_quality/brt_data.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-formattable(brt_data)
-```
-```{r}
-monthly_rainfall_avg <- read_delim("~/Desktop/brt_air_quality/monthly_rainfall_avg.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-tas_1991_2016_BRA <- read_delim("~/Desktop/tas_1991_2016_BRA.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-
-combined_climate_data <- merge(monthly_rainfall_avg, tas_1991_2016_BRA, all = TRUE)
-
-climate_data_table <- combined_climate_data %>%
-  table(combined_climate_data$`Rainfall - (MM)`, combined_climate_data$`Temperature - (Celsius), Year, Statistics, Country, ISO3`, all = TRUE)
-head(climate_data_table)
-```
-
-```{r pollutant data, Table 2}
-# Number of recorded pollutants at different stations in the four cities from 1995-2016
-library(readr)
-use_pollutants <- read_delim("use_pollutants.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE, type=list)
-pollutants_figure <- table(use_pollutants$Regiao, use_pollutants$OPCAO)
-```
-
-
 
 
 ```{r}
-cetesb <- read_csv("~/Desktop/air-pollution-at-so-paulo-brazil-since-2013(1) 2/cetesb.csv/cetesb.csv")
-str(cetesb)
 
+as_tibble(Pop_growth_rates)
+head(Pop_growth_rates)
+
+
+Growth_rates <- ggplot(aes(x = Pop_growth_rates$`Nome_distrito`, y = `Tx_cresc91/2000`, y2 = `Tx_cresc2000/10`, y3 = `Tx_cresc2010/20`), type = "S", pch = 19, 
+     col = "red",  xlab = "District Name", ylab = "Population growth")
+```
+
+```{r}
 
 ```
 
-```{r regression on AQ}
-require("datasets")
-library(rdrobust)
-use_pollutants <- read_delim("use_pollutants.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-str(use_pollutants)
-head(use_pollutants)
-col1 <- mapply(anyNA, use_pollutants)
-str(use_pollutants)
 
-
-```
 
