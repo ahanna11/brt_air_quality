@@ -145,9 +145,7 @@ after_WC <- ifelse(air_data$date>"2014-12-30",1,0)
 
 
 ```{r regression on ozone}
-ozone_plot <- ggplot(air_data, aes(x= sao_paulo_stations, y = ozone)) +
-  geom_point() +
-  stat_smooth(method = 'lm', formula=y~x)
+ozone_regr <- lm(sp_ozone_data_hourly ~ after_WC + )
 ```
 
 
