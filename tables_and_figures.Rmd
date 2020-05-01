@@ -1,64 +1,152 @@
 ---
-title: "data_sec"
+title: "tables and figures"
 author: "Abby Hanna"
 date: "4/25/2020"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
+
+
 ```{r setup, include=FALSE}
-library(readr)
-library(magrittr)
+knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-library(ggplot2)
+library(lubridate)
 library(formattable)
+library(ggplot2)
+library(stargazer)
 ```
 
 
-```{r pollutant data, Table 1}
-# Number of recorded pollutants at different stations in the four cities from 1995-2016
-library(readr)
-use_pollutants <- read_delim("use_pollutants.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-pollutant_data <- as_tibble(use_pollutants)
-arrange(pollutant_data)
+```{r import data}
+air_data <- read_csv("cetesb.csv", 
+    col_types = cols(BENZENO = col_double(), 
+        CO = col_double(), MP2.5 = col_double(), 
+        SO2 = col_double(), TOLUENO = col_double(), 
+        TRS = col_double())) %>% 
+  mutate(year = year(time),
+         month = month(time),
+         day = day(time),
+         hour = hour(time),
+         date = as.Date(str_c(year,"-", month, "-", day),"%Y-%m-%d")) %>% 
+  select(id, hour, ozone = O3, date) 
 ```
 
 
-```{r climate data}
-monthly_temp<- read_csv("tas_1991_2016_BRA.csv")
-head(monthly_temp)
-monthly_rain <- read_delim("monthly_rain.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE)
-head(monthly_rain)
+## Variable descriptions 
+
+\begin{table}
+\centering
+\caption{Variable definitions}
+\label{variableDefinitions}
+\begin{tabular}{ll}
+\hline
+Variable name      & Description                                  \\
+\hline
+\hline
+id                 & Identification number for city               \\
+hour               & Hour recorded at station                     \\
+mean_ozone         & Daily average ozone level                    \\
+min_ozone          & Daily average minimum ozone level            \\
+max_ozone          & Daily average maximum ozone level            \\
+after_WC           & Dummy variable: 1 if city of São Paulo, 0 if other \\
+date               & Day recorded at station                      \\                            
+temperature        & Average temperature recorded                 \\
+windspeed          & Average windspeed recorded                   \\
+humidity           & Average humidity recorded                    \\
+\hline
+\end{tabular}
+\end{table}
 
 
-combined_climate_data <- merge(monthly_temp, monthly_rain)
-formattable(combined_climate_data)
+```{r create weather sum table, echo = F, results = 'asis'}
+
+sudeste <- read_csv("sudeste.csv")
+
+weather_stats <- sudeste %>% 
+  group_by(city) %>%
+  mutate(temp = mean(temp),
+         hmdy = mean(hmdy),
+         wdsp = mean(wdsp)) %>%
+  select(date, temp, hmdy, wdsp)
+
+stargazer::stargazer(weather_stats)
+```
+
+
+```{r read in station data}
+
+stations <- read_csv("estacoes-cetesb.csv")
+
+sao_paulo_stations <- stations %>% 
+  filter(Municipio == "SAO PAULO" & Qualidade == "N1 - BOA" & POLUENTE == "O3") %>% 
+  select(id = ID, longitude = x, latitude = y, municipality = Municipio)
+
+sp_ozone_data_hourly <- sao_paulo_stations %>% 
+  left_join(air_data)
+head(sp_ozone_data_hourly)
+
+
+sp_ozone_daily <- sp_ozone_data_hourly %>% 
+  group_by(date) %>% 
+  summarize(mean_ozone = mean(ozone, na.rm = T), 
+            max_ozone = max(ozone, na.rm = T),
+            min_ozone = min(ozone, na.rm = T))
+
+```
+
+```{r hourly ozone data, echo = F, results = 'asis'}
+stargazer::stargazer(as.data.frame(sp_ozone_data_hourly),
+                     label = "Summary Statistics, Hourly Ozone Level")
+```
+
+
+
+```{r}
+stargazer::stargazer(as.data.frame(sp_ozone_daily),
+                     label = "Summary Statistics Daily Ozone Level",
+                     title = "SumStats", 
+                     header = F, 
+                     type = "latex",
+                     digits = 0)
+```
+
+
+```{r}
+library(readr) 
+library(tableone)
+sa_o_paulo_transportation <- read_csv("são-paulo-transportation.csv")
+
+sum_stats_values <- CreateTableOne(data = sa_o_paulo_transportation)
+summary(sum_stats_values)
+
+```
+
+```{r creation of dummy variable}
+
+dummy_var_data <- sudeste %>%
+  merge()
+  
+  
+  
+
+
 
 ```
 
 
-```{r SP transport}
-sp_transportation <- read_csv("são-paulo-transportation.csv")
-formattable(sp_transportation)
+
+
+
+
+```{r regression on ozone}
+
+
+
+
 ```
 
-
-
-```{r BH transport}
-belo_horizonte_transportation <- read_csv("belo-horizonte-transportation.csv")
-formattable(belo_horizonte_transportation)
-```
-
-
-
-
-```{r Porto Alegre transport}
-porto_alegre_transportation <- read_csv("porto-alegre-transportation.csv")
-formattable(porto_alegre_transportation)
-```
 
 
 
