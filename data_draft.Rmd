@@ -137,7 +137,7 @@ summary(sum_stats_values)
 
 ```{r creation of dummy variable}
 
-after_WC <- ifelse(air_data$date>"2014-12-30",1,0)
+air_data$after_WC <- ifelse(date>"2014-12-30",1,0)
 
 ```
 
@@ -145,7 +145,8 @@ after_WC <- ifelse(air_data$date>"2014-12-30",1,0)
 
 
 ```{r regression on ozone}
-ozone_regr <- lm(sp_ozone_data_hourly ~ after_WC + )
+ozone_regr <- lm(so2_regression_results <- lm(log_so2 ~ after + exposed + exposed*after + as.factor(hour) + TMP1 + WSR1 + WDR, 
+                         data = so2_regression_data) 
 ```
 
 
