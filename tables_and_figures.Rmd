@@ -16,6 +16,7 @@ library(lubridate)
 library(formattable)
 library(ggplot2)
 library(stargazer)
+library(tableone)
 ```
 
 
@@ -34,6 +35,7 @@ air_data <- read_csv("cetesb.csv",
 ```
 
 
+$
 ## Variable descriptions 
 
 \begin{table}
@@ -58,7 +60,7 @@ humidity           & Average humidity recorded                    \\
 \hline
 \end{tabular}
 \end{table}
-
+$
 
 ```{r create weather sum table, echo = F, results = 'asis'}
 
@@ -75,18 +77,20 @@ stargazer::stargazer(weather_stats)
 ```
 
 
-```{r read in station data}
-
+```{r read in station data, summart stats for stations}
 stations <- read_csv("estacoes-cetesb.csv")
 
 sao_paulo_stations <- stations %>% 
-  filter(Municipio == "SAO PAULO" & Qualidade == "N1 - BOA" & POLUENTE == "O3") %>% 
+  filter(Municipio == "SAO PAULO" & POLUENTE == "O3") %>% 
+  select(id = ID, longitude = x, latitude = y, municipality = Municipio)
+  
+summary(sao_paulo_stations)
+
+other_stations <- stations %>%
+  filter(Municipio != "SAO PAULO" & POLUENTE == "O3") %>%
   select(id = ID, longitude = x, latitude = y, municipality = Municipio)
 
-sp_ozone_data_hourly <- sao_paulo_stations %>% 
-  left_join(air_data)
-head(sp_ozone_data_hourly)
-
+summary(other_stations)
 
 sp_ozone_daily <- sp_ozone_data_hourly %>% 
   group_by(date) %>% 
@@ -97,6 +101,11 @@ sp_ozone_daily <- sp_ozone_data_hourly %>%
 ```
 
 ```{r hourly ozone data, echo = F, results = 'asis'}
+
+sp_ozone_data_hourly <- sao_paulo_stations %>% 
+  left_join(air_data)
+summary(sp_ozone_data_hourly)
+
 stargazer::stargazer(as.data.frame(sp_ozone_data_hourly),
                      label = "Summary Statistics, Hourly Ozone Level")
 ```
@@ -123,28 +132,22 @@ summary(sum_stats_values)
 
 ```
 
+
+
+
 ```{r creation of dummy variable}
 
-dummy_var_data <- sudeste %>%
-  merge()
-  
-  
-  
-
-
+after_WC <- ifelse(air_data$date>"2014-12-30",1,0)
 
 ```
 
 
 
 
-
-
 ```{r regression on ozone}
-
-
-
-
+ozone_plot <- ggplot(air_data, aes(x= sao_paulo_stations, y = ozone)) +
+  geom_point() +
+  stat_smooth(method = 'lm', formula=y~x)
 ```
 
 
