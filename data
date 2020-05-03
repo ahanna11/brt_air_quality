@@ -180,8 +180,8 @@ stargazer(climate_2015)
 
 ```{r regression on ozone}
 
-so2_regression_results <- lm(SPozone ~ after_wc + exposed + exposed*after + as.factor(hour) + TMP1 + WSR1 + WDR, 
-                         data = so2_regression_data)                  
+regression_results <- lm(SPozone ~ after_wc +  + exposed*after + as.factor(hour) + mean(temp) + mean(wdsp) + mean(hmdy), 
+                         data = )                  
                  
 
 ```
