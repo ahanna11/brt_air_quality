@@ -1,0 +1,11 @@
+Variable;Description
+id ;Identification number for city
+max_temp;Maximum temperature recorded
+min_temp;Minimum temperature recorded
+avg_temp;Average temperature
+mean_humidity;Average humidity recorded
+mean_windspeed;Average windspeed recorded
+after_wc;Dummy variable: 1 if after 2014, 0 if otherwise
+in_sp;Dummy variable: 1 if city of Sao Paulo, 0 if otherwise
+after_wc_did;Interaction term for DID regression
+log_ozone;Log amount of ozone recorded
