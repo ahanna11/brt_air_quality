@@ -1,0 +1,92 @@
+---
+title: "data_appendix to: \Effects of Bus Rapid Transit Systems on Reducing Ozone Pollution in São Paulo, Brazil\"
+author: "Abby Hanna"
+date: "5/6/2020"
+output: pdf_document:
+    toc: true
+    number_sections: true
+---
+
+```{r setup, echo = F, message = F}
+knitr::opts_chunk$set(results = 'asis', cache = F)
+library(tidyverse)
+library(lubridate)
+library(summarytools)
+st_options(plain.ascii = F,
+           style = "rmarkdown",
+           footnote = NA,
+           subtitle.emphasis = F,
+           dfSummary.silent = T,
+           dfSummary.valid.col = F,
+           tmp.img.dir = "./tmp",
+           dfSummary.style = "grid")
+```
+
+## Sao Paulo Air Pollution  description
+**Citation:** Companhia Ambiental do Estado de São Paulo and Danilo Lessa Bernardineli, “Air Pollution at São Paulo, Brazil, since 2013.” Kaggle, https://www.kaggle.com/danlessa/air-pollution-at-so-paulo-brazil-since-2013/metadata   
+**DOI:** 10.34740/KAGGLE/DSV/627405.  
+**Date Downloaded:** April 20, 2020  
+**Filename(s):** raw_data/cetesb.csv 
+**Unit of observation:** pollutants recorded at stations in region of Sao Paulo, Brazil  
+**Dates covered:** 2013-2019 
+
+### To obtain a copy
+
+This data has been webscraped from the Companhia Ambiental do Estado de São Paulo website for easy access on Kaggle.com by Danilo Lessa Bernardelli. To obtain the data, navigate to the link provided above. 
+
+### Importable version (if necessary)
+
+This data needed to be processed in order for me to work with it on my computer. The file originally contains air pollution data for different pollutants, but many of the data are missing. Given this, I chose to focus on ozone, as there were the most observations.  Due to time constraints and computer malfunctions I was not able to mutate the data on my own, so professor Sayre performed the data extraction. The raw data file was mutated into a summary table of daily ozone levels:
+
+**Filename(s):** importable_data/ozone_daily.csv
+
+### Variable descriptions
+
+- **date**           Date ozone was recorded. 
+- **municipality:**  City ozone recorded in. 
+- **mean_ozone:**    Average daily level of ozone recorded. 
+- **max_ozone:**     Maxoimum daily level of ozone recorded. 
+- **min_ozone:**     Minimum daily level of ozone recorded. 
+
+### Data import code and summary
+
+```{r}
+ozone_daily <- read_csv("ozone_daily.csv")
+`export_summary_table(dfSummary(ozone_daily))`
+```
+
+## Sao Paulo historical climate data
+**Citation:** Doutorado and Mestrado. “Hourly Weather Surface - Brazil (Southeast Region).” Kaggle, April 6, 2018. https://www.kaggle.com/PROPPG-PPG/hourly-weather-surface-brazil-southeast-region/metadata. Original data source: Dataset Source: INMET (National Meteorological Institute - Brazil).
+**Date Downloaded:** April 30, 2020 
+**Filename(s):** raw_data/sudeste.csv 
+**Unit of observation:** Hourly climate data for southeast region of Brazil  
+**Dates covered:** 2000-2016
+
+### To obtain a copy
+
+The easiest way to obtain the data is to follow the above link to Kaggle.com. 
+
+### Importable version (if necessary)
+
+This data also needed to be modified in order for my computer to work with it properly. Professor Sayre extracted the data from the Sao Paulo weather stations and averages for maximum temperature, minumum temperature, average temperature, average humidity, and average windspeed as control variables for the regression. The data was combined into one dataset by geographical id. 
+
+**Filename(s):** importable_data/recent_weather_daily.csv, importable_data/nearest_weather_Station.csv
+
+### Variable descriptions
+
+- **max_temp:** Maximum daily temperature recorded. 
+- **min_temp:** Minimum daily temperature recorded.
+- **avg_temp:** Average daily temperature recorded. 
+- **avg_humidity:** Average daily humidity recorded. 
+- **mean_windspeed:** Average daily windspeed recorded. 
+
+### Data import code and summary
+
+```{r}
+nearest_weather_Station <- read_csv("nearest_weather_Station.csv")
+recent_weather_daily <- read_csv("recent_weather_daily.csv")
+`export_summary_table(dfSummary(nearest_weather_Station))`
+`export_summary_table(dfSummary(recent_weather_daily))`
+```
+
+
