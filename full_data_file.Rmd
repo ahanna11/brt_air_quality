@@ -26,30 +26,15 @@ recent_weather_daily <- read_csv("recent_weather_daily.csv")
 
 
 
-## Variable descriptions: Table 1
-
-\begin{table}
-\centering
-\caption{Variable definitions}
-\label{variableDefinitions}
-\begin{tabular}{ll}
-\hline
-Variable name      & Description                                  \\
-\hline
-\hline
-id                 & Identification number for city               \\
-hour               & Hour recorded at station                     \\
-mean_ozone         & Daily average ozone level                    \\
-min_ozone          & Daily average minimum ozone level            \\
-max_ozone          & Daily average maximum ozone level            \\
-after_WC           & Dummy variable: 1 if city of São Paulo, 0 if other \\
-date               & Day recorded at station                      \\                            
-temperature        & Average temperature recorded                 \\
-windspeed          & Average windspeed recorded                   \\
-humidity           & Average humidity recorded                    \\
-\hline
-\end{tabular}
-\end{table}
+```{r}
+var_desc <- read_delim("var_desc.csv", ";", 
+    escape_double = FALSE, trim_ws = TRUE)
+formattable(var_desc, align =c("c","c"),
+            list(`Variable` = formatter(
+            "span", style = ~ style(color = "blue",font.weight = "bold")),
+            `Description` = formatter(
+            "span", style = ~ style(color = "grey"))))
+```
 
 
 
