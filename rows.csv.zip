@@ -1,5 +1,0 @@
-{
-  "code" : "invalid_request",
-  "error" : true,
-  "message" : "Invalid Request: Deserialization error at line 1 column 4685: No property 'soql' for object type 'ViewExpressionNode'"
-}
