@@ -165,7 +165,7 @@ formattable(var_desc, align =c("c","c"),
             `Description` = formatter(
             "span", style = ~ style(color = "grey"))))
             
-   # Reads in a nice-looking table in the console, but will not knit nicely. Table included in pdf version of paper. 
+   
 ```
 
 #Discussion of Data
