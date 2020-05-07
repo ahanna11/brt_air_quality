@@ -48,6 +48,8 @@ This data needed to be processed in order for me to work with it on my computer.
 - **max_ozone:**     Maxoimum daily level of ozone recorded. 
 - **min_ozone:**     Minimum daily level of ozone recorded. 
 
+
+
 ### Data import code and summary
 
 ```{r}
@@ -90,3 +92,77 @@ recent_weather_daily <- read_csv("recent_weather_daily.csv")
 ```
 
 
+###Data processing and combination
+
+```{r}
+## Air Data 
+#Ozone readings from stations in Sao Paulo since 2013
+table_one <- ozone_daily %>%
+  filter(municipality == "SAO PAULO") %>%
+  select(date, municipality, mean_ozone, max_ozone, min_ozone)
+  
+## Weather Data 
+#Daily weather averages in Sao Paulo since 2013
+table_two <- recent_weather_daily %>%
+  filter(city == "São Paulo") %>%
+  select(date, city, max_temp, min_temp, avg_temp, mean_humidity, mean_windspeed)
+  
+ #Combine the data into one frame 
+combined_data_sp <- merge(table_one, table_two)  
+  #Table 2: Summary statistics for ozone and weather variables in state of Sao Paulo 
+stargazer(combined_data_sp)
+ ```
+ 
+```{r as tibbles for easier formatting}
+sp_data <- as_tibble(combined_data_sp)
+weather_data <- as_tibble(nearest_weather_Station)
+ozone_data <- as_tibble(ozone_daily)
+```
+
+
+## Create plots for city and state of Sao Paulo
+
+```{r, ozone figures 1 and 2, results='asis'}
+ggplot(combined_data_sp, aes(x=date, y=mean_ozone, fill = municipality)) + geom_col(position = "dodge") + labs(title = 'Average ozone levels in the city of São Paulo', subtitle = NULL, caption = 'Time period: 2013-2018', x = 'Year', y = 'Ozone level')
+ggplot(ozone_daily, aes(x=date, y=mean_ozone, fill = municipality)) + geom_col(position = "dodge") + labs(title = 'Average ozone levels in the region of Sao Paulo', subtitle = NULL, caption = 'Time period: 2013-2018', x = 'Year', y = 'Ozone level')
+```
+
+
+```{r create dummy variables for regression, results='asis'}
+#create variables for after 2015 and in Sao Paulo (city)
+sp_data$after_wc <- ifelse(sp_data$date >= "2015-01-01",1,0)
+new_ozone_data <- ozone_data %>%
+  mutate(log_ozone = log(mean_ozone+1),
+         after_wc =ifelse(date >= "2015-01-01",1,0),
+         in_sp =ifelse(municipality == "SAO PAULO",1,0), after_wc_did = after_wc*in_sp)
+new_weather_data <- merge(recent_weather_daily, weather_data)
+#Combine the data into one frame
+combined_data <- new_ozone_data %>%
+  left_join(new_weather_data)
+```
+
+
+```{r regression, results='asis'}
+model_sp <- lm(log_ozone ~ after_wc + in_sp + after_wc_did + max_temp + min_temp + avg_temp + mean_humidity + mean_windspeed + as.factor(id), data = combined_data)
+stargazer(model_sp, omit = "as.factor")
+```
+**notes = Monitor fixed effects included for id (weather station), but not reported here.**
+
+```{r}
+export_summary_table(dfSummary(model_sp))
+```
+
+# Analysis Variables
+```{r variable description table, created by me}
+var_desc <- read_delim("var_desc.csv", ";", 
+    escape_double = FALSE, trim_ws = TRUE)
+formattable(var_desc, align =c("c","c"),
+            list(`Variable` = formatter(
+            "span", style = ~ style(color = "blue",font.weight = "bold")),
+            `Description` = formatter(
+            "span", style = ~ style(color = "grey"))))
+            
+   # Reads in a nice-looking table in the console, but will not knit nicely. Table included in pdf version of paper. 
+```
+
+#Discussion of Data
