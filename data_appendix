@@ -113,17 +113,20 @@ combined_data_sp <- merge(table_one, table_two)
 stargazer(combined_data_sp)
  ```
  
-```{r as tibbles for easier formatting}
-sp_data <- as_tibble(combined_data_sp)
-weather_data <- as_tibble(nearest_weather_Station)
-ozone_data <- as_tibble(ozone_daily)
+```{r histograms for looking at distribution of data}
+hist(combined_data_sp$mean_ozone)
+hist(combined_data_sp$mean_humidity)
+hist(combined_data_sp$mean_windspeed)
+hist(combined_data_sp$avg_temp)
 ```
 
 
-## Create plots for city and state of Sao Paulo
+## Create plots for city and state of Sao Paulo, Figure 1 and Figure 2
 
 ```{r, ozone figures 1 and 2, results='asis'}
+# Figure 1
 ggplot(combined_data_sp, aes(x=date, y=mean_ozone, fill = municipality)) + geom_col(position = "dodge") + labs(title = 'Average ozone levels in the city of São Paulo', subtitle = NULL, caption = 'Time period: 2013-2018', x = 'Year', y = 'Ozone level')
+# Figure 2
 ggplot(ozone_daily, aes(x=date, y=mean_ozone, fill = municipality)) + geom_col(position = "dodge") + labs(title = 'Average ozone levels in the region of Sao Paulo', subtitle = NULL, caption = 'Time period: 2013-2018', x = 'Year', y = 'Ozone level')
 ```
 
