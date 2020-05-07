@@ -1,0 +1,180 @@
+---
+title: "The Effects of Bus Rapid Transit Systems on Reducing Ozone Pollution in São Paulo, Brazil"
+author: "Abigail Hanna"
+abstract: "This project looks at the level of ozone recorded in the São Paulo region of Brazil from the World Cup and upgrading of a Bus Rapid Transit (BRT) system in 2015  to the most recently available data. This project uses a difference-in-difference model and climatological and ozone pollutant independent variables to determine if the BRT system in the city of São Paulo caused any significant ozone reduction compared to the rest of the São Paulo state. Positive coefficients on both dummy variables and a negative coefficient on the interaction term indicate that there has been a reduction in ozone for the city since 2015, but also that the effects may be weaker when combined. Overall, the p-values for most independent variables were significant, and the adjusted R-squared accounted for roughly 40% of the variation observed."
+header-includes:
+   - \usepackage{booktabs}
+   - \usepackage{setspace}
+   - \doublespacing
+   - \usepackage[labelfont=bf]{caption}
+output: 
+  pdf_document:
+    number_sections: true
+    keep_tex: true
+---
+
+```{r setup, echo = F, message = F}
+knitr::opts_chunk$set(results = 'asis', cache = F)
+library(tidyverse)
+library(lubridate)
+library(stargazer)
+```
+# Introduction
+
+Public transportation has become a catalyst of environmentally-sustainable practices for major cities around the globe. In dense urban areas where fossil fuel production and greenhouse gases tend to affect the most vulnerable populations, environmental economic policy has recently aimed towards mass transit systems that allow for more widely-practiced methods of sustainability in everyday life (Baghini et al, 2014). In 2018, the United Nations reported that 55% of the world already lived in cities, and predicted that by the year 2050, this number would rise to 68% or two thirds of the entire population (United Nations, 2018). Concentrations of airborne criteria pollutants which include particulate matter (2.5 and 10), carbon monoxide, sulfur dioxide, lead, ozone and nitrous dioxide have been proven to be detrimental to human health when orally ingested and can exacerbate other preexisting health conditions (Koenig, 2000).
+Transportation infrastructure is a useful vessel to understanding traffic and mobility patterns and the ways in which they can alter air quality. Mass transit systems such as Light Rail Transit (LRT) and Bus Rapid Transit (BRT), which generally use less diesel (or alternative forms of fuel) than private vehicles such as motorcycles, taxis and personal cars have been shown to be effective in decreasing criteria pollutants in the post-implementation period. BRT systems in cities and their effects on air quality have been observed all over the globe, including Europe, Latin America and Asia (Reed, 2015). BRTs allow for faster travel times in frequently congested urban areas by operating via customized lanes next to private cars in city traffic. They are attractive for a number of reasons including low-cost implementation, flexibility in route planning, and the ease of acquiring land rights for construction. 
+The majority of air pollution in major cities such as São Paulo comes from the transport sector. Until recently, the Brazilian national air quality standards had not been updated since the eighties, after the end of the military dictatorship in 1985. These standards were updated in 2018 by the National Council on the Environment CONAMA (Conselho Nacional do Meio Ambiente, 2018). The air quality limit for O3 in Brazil is currently set at 0.106ppm (parts per million) or 160ug/m3 for a sampling time of one hour, not to exceed that number more than once per year. This standard is 0.031ppm higher than the ground-level ozone standards of the EPA (EPA, 2018). Of the twenty-six states in Brazil, only eight -- Rio Grande do Sul, Paraná, São Paulo, Rio de Janeiro, Espírito Santo, Minas Gerais, Goiás and Bahia -- monitor their air quality. 
+Brazil held the FIFA Men’s World Cup in 2014 in twelve different cities across the country: Rio de Janeiro, São Paulo, Recife, Salvador, Fortaleza, Manaus, Natal, Cuiabá, Curitiba, Brasília, Belo Horizonte and Porto Alegre. Each of these cities, except for Manaus in the Amazonas state and Natal in the state of Rio Grande do Norte, also implemented (or upgraded) a BRT system in order to host the mass influx of tourists and, post-sports event, incentivize public over private transportation (Zimbalist, 2015). As an environmentally-sustainable addendum to Brazil’s bid to host the World Cup in 2014, a new bus rapid transit public transportation system was proposed for most of the cities who would see a significant influx of tourists. 
+Aside from low costs and rapid implementation, the BRT was attractive as a way to combat Brazil’s air pollution problem, on the assumption that it would help to reduce the effect of urban heat islands in the city. Urban heat islands occur when high-density cities experience a higher level of heat or humidity than their surrounding rural areas. Urban heat islands are a rampant problem in many major cities in Latin America since they are subject to a series of meteorological inputs and exacerbated by ground-level ozone (National Geographic, 2012). This paper will use a difference in difference model on the current ozone levels in the city of São Paulo in order to assess whether or not the BRT has caused a significant reduction in ozone emissions compared to other cities in the São Pauo state. This paper aims to provide a positive perspective of the potentiality of bus rapid transit systems to become more widely used in major cities as a method of sustainability. 
+The rest of the paper is as follows: First, I will conduct a literature review of the existing studies of BRTs in order to demonstrate how this topic has been studied insofar in the field of environmental economics. Next, I present the data and methodology in which the project was completed. Finally, I will list the results and interpret the findings in the last section.    
+
+# Data and Methods
+
+## Conceptual model
+
+  This paper takes an empirical approach in order to determine the level of ozone in the city of Sao Paulo and compare the results to other cities in the Sao Paulo state. This study takes into account environmental factors such as temperature, windspeed, humidity, however, a more detailed approach using demographic and other non environmental factors, such as population growth rate, would contribute greatly to the robustness of these results. Sao Paulo experiences significant seasonal variation in rainfall which is not recorded in this study, and may also confound statistically significant results. 
+  Environmental control variables of temperature, windspeed, and humidity were based on the tropical climate of Brazil and extensive studies of urban heat islands in Sao Paulo, which can have further detrimental effects on water quality and elevated emissions in major cities. Much of the existing literature theorizes that BRT systems reduce air pollutants by incentivizing public over private transport, therefore reducing the amount of private vehicles which emit greenhouse gases on the road. These findings will not be applicable to each city in Brazil due to significant differences in geography and socio-demographic factors, however, I theorize that a general reduction of ozone will be observed in São Paulo city compared to the rest of the region due to the different mode of available transport. 
+
+## Difference-in-difference 
+
+  Based on the existing literature, this paper will run a difference-in-difference regression model on ozone level in São Paulo. A difference-in-difference approach using observational climate and ozone data will be applied to regions in the control group (state of Sao Paulo) and the treatment group (city of Sao Paulo) in order to estimate any effect. The DID approach will compare the different outcomes over the period of 2013-2018 between the two groups. DID aids to ignore results between the groups which could be from other variable inputs within the post-World Cup period. This paper utilizes a linear regression approach, since the cross-sectional data contains pre and post World Cup BRT information. 
+  However, there are assumptions to the DID approach. The parallel trend assumption, the most difficult to fulfill, requires that in the absence of treatment, the difference between the groups is constant over time. This may further confound results since the geographical locations of the regions studied are not all the same and experience different weather trends as well as different inputs of emissions. The approach used here will help researchers to observe the differences in ozone for a region which implemented a BRT and for regions which did not, and aid in city public health and transportation policy by checking for positive relationships between the BRT and a decrease in ozone level in the city of Sao Paulo. 
+
+## Data 
+
+### Variable descriptions
+
+Descriptions for each of the variables used in this study are listed in Table 1 below.
+
+```{r variable description, results='asis'}
+# Table 1
+var_desc <- read_delim("var_desc.csv", ";", 
+    escape_double = FALSE, trim_ws = TRUE)
+   # Note: Thre is a chunk in the appendix that reads in a nice-looking table in the console, but it will not knit nicely. Table included in pdf version of paper. 
+View(var_desc)
+```
+
+### Ozone and climate data 
+
+  Historical data on air quality in each of the regions was obtained from an online web scraping of the CETESB website, run by the state government. Data on historical climate conditions is from the Brazilian Institute of Geography and Statistics. Summary statistics for ozone, temperature, wind speed and humidity for the city and region of São Paulo during the time period sampled are available in Table 2. Ozone is measured in ug/m3, and climate variables are measured in meters per second, percentages or degrees. 
+  
+```{r}
+#Ozone readings in Sao Paulo since 2013
+table_one <- ozone_daily %>%
+  filter(municipality == "SAO PAULO") %>%
+  select(date, municipality, mean_ozone, max_ozone, min_ozone)
+
+#Daily weather averages in Sao Paulo since 2013
+table_two <- recent_weather_daily %>%
+  filter(city == "São Paulo") %>%
+  select(date, city, max_temp, min_temp, avg_temp, mean_humidity, mean_windspeed)
+
+#Combine the data into one frame
+combined_data_sp <- merge(table_one, table_two)
+
+#Table 1: Summary statistics for ozone and weather variables in state of Sao Paulo 
+stargazer::stargazer((combined_data_sp),
+                     title = "Table 2 - Summary Statistics",
+                     header = F,
+                     type = "latex")
+```
+  
+  The sample taken has 3,911 observations, which provides a good fundamental base that will be less subject to bias if it were a smaller population. Also, with a large N, the results of the mean and standard deviation may be estimated more accurately than if the sample were smaller. Histograms of the weather variables (available in the data appendix) reveal that mean_ozone distribution is skewed to the right, as a result of the lower boundary in the dataset. Windspeed is relatively normally distributed, while humidity and average temperature are both negatively skewed to the left. This reveals variation in humidity and temperature across the region studied, which falls in line with the geography of southeast Brazil.  
+  The standard deviation determines how spread out the data is from the mean. For maximum ozone and minimum ozone the standard deviation is larger than the mean, indicating that there is a lot of variation in those measurements across this region. Here, the maximum ozone reading is 347ug/m3, meaning that the biggest amount of ozone present during the sampling was well over the 160ug/m3 per year standard allowed. Minimum values can often be interpreted for outliers in the data, but with these variables, a minimum amount of zero for wind, humidity etc. can be expected. 
+  One variable not explored here which would significantly affect the data would be precipitation, which varies extremely throughout Sao Paulo during the year. The 25th percentile shows the lowest values recorded and indicates that 25% of this data are less than or equal to the number shown.  The 75th percentile for humidity is notably larger than the other measurements, indicating that the average humidity level is often large. 
+ 
+### Mean ozone levels in Sao Paulo city and state, Figures 1 and 2 
+ 
+ Below are two graphs demonstrating the average levels of ozone in the city and state of São Paulo, respectively. Both graphs reveal annual variation in the recording of ozone in the city and state. The first graph (Figure 1) reveals that ozone levels in the city of Sao Paulo are higher already when compared to surrounding regions (Figure 2).  
+ 
+```{r, ozone figures 1 and 2, results='asis'}
+# Figure 1
+ggplot(combined_data_sp, aes(x=date, y=mean_ozone, fill = municipality)) + geom_col(position = "dodge") + labs(title = 'Average ozone levels in the city of São Paulo', subtitle = NULL, caption = 'Time period: 2013-2018', x = 'Year', y = 'Ozone level')
+# Figure 2
+ggplot(ozone_daily, aes(x=date, y=mean_ozone, fill = municipality)) + geom_col(position = "dodge") + labs(title = 'Average ozone levels in the region of Sao Paulo', subtitle = NULL, caption = 'Time period: 2013-2018', x = 'Year', y = 'Ozone level')
+```
+ 
+### Regression 
+
+  The dependent variable in this study is the log level of ozone recorded in São Paulo (log_ozone). A difference in difference model was used for this analysis. The equation (Equation 1) is below: 
+  
+  **log_ozone it=β1*[after_wc] + β2*[in_sp] + β3[after_wc_did] +  Xit[min_temp] + Xit[max_temp]  + Xit[avg_temp]  Xit [avg_windspeed] + Xit [avg_humidity] + as.factor(id) + ε**
+  
+  ‘i’ and ‘t’ are subscripts for station and time, respectively.  β1 * [after_wc] is the fixed effect or constant. The variables for temperature, windspeed and humidity are controls which account for weather variations throughout the time period. As.factor(id)is a factor variable for the different monitoring stations throughout the region sampled.  In_sp is a dummy variable which stands for 1 if the place is São Paulo city (0 if otherwise), and after_WC  is a dummy variable which stands for 1 if the time period is after 2015 (0 if otherwise). After_wc*in_sp is the interaction term between the two dummies for the difference-in-difference model. All ozone levels are measured in µg/m3. 
+  
+
+```{r create dummy variables for regression, results='asis'}
+
+#create variables for after 2015 and in Sao Paulo (city)
+
+sp_data$after_wc <- ifelse(sp_data$date >= "2015-01-01",1,0)
+
+new_ozone_data <- ozone_data %>%
+    mutate(log_ozone = log(mean_ozone+1),
+         after_wc =ifelse(date >= "2015-01-01",1,0),
+         in_sp =ifelse(municipality == "SAO PAULO",1,0), after_wc_did = after_wc*in_sp)
+new_weather_data <- merge(recent_weather_daily, weather_data)
+
+combined_data <- new_ozone_data %>%
+  left_join(new_weather_data)
+```  
+ 
+# Results and Discussion
+
+  The results of the regression can be found in Table 3. 
+  
+```{r regression, results='asis'}
+model_sp <- lm(log_ozone ~ after_wc + in_sp + after_wc_did + max_temp + min_temp + avg_temp + mean_humidity + mean_windspeed + as.factor(id), data = combined_data)
+stargazer(model_sp, omit = "as factor",
+          title = "Table 3 - Regression Results",
+                     header = F,
+                     type = "latex")
+```
+  
+  The combined data gives a total of 7,259 observations. The numbers at the bottom of the table are the goodness-of-fit measurements which help to evaluate the robustness of the regression. The R-squared value tells us how much the model explains away the variation in a linear regression. In this case, the R-squared is 38%, meaning that the model used explains about forty percent of the variation demonstrated. However, for a multivariate regression, the adjusted R-squared gives a better explanation, as R-squared will always increase when adding new variables. Here, the adjusted R-squared is only a 0.001 difference. The residual standard error measures the average amount which log_ozone will deviate from the regression line and the error of the model’s predictability (and is equal to the positive square root of the mean square error). The RSE for this model is 43.7 with six degrees of freedom. The F statistic is the ratio of the sum of squares divided by the mean error sum of squares that predicts the probability of the null hypothesis is true (or, all regression coefficients are zero). The large number recorded here, 322.880, indicates that the correlation between the model and log_ozone may be statistically significant. However, if the independent variables are not statistically significant, the F statistic will not matter. For this dataset, we can at least conclude that the model used fits the data better with the independent variables than without them. 
+    Variable coefficients represent the average change in the dependent variable for one unit of change in the predictor variable, holding other variables constant. This isolates the role one variable plays into the determination of the dependent variable from the others in the model. Positive coefficients indicate that as the value of the independent variable goes up, so does the mean of the dependent variable. Negative coefficients are the opposite: as the value of the independent variable goes up, the mean of the dependent variable decreases. In the regression, there are positive coefficients on after_wc, in _sp, max_temp, min_temp, mean_windspeed, and station IDs 6, 39 and 54, and negative coefficients on after_wc_did, avg_temp, mean_humidity, and stations 22, 33, and 34. So, as the climate variables of max_temp, min_temp, mean_windspeed and IDs 6, 39 and 54 respectively increase, so will the amount of log_ozone in the region, and as after_wc_did, avg_temp, mean_humidity and IDs 22, 33 and 34 increase, log_ozone in the area will go down. A positive coefficient on the dummy variables after_wc and in_sp indicates that ozone is higher for the time period post-World Cup in 2015 compared to before 2015, as well as those in the treatment group (city of São Paulo) than those in the control group (state of São Paulo). There is a negative coefficient on the interaction term, after_wc_did, which indicates that the effect resulting from the combined action is likely less than the actual individual effects. Both dummies are positive, so this can be interpreted as positive relationships between after_wc and in_sp being weaker when one of their values is higher (in this case, in_sp). 
+    Finally, the p-value tests that a variable coefficient is equal to zero, or has no recorded effect on the dependent variable. Large p-values indicate that changes in the independent variables are not associated with any changes in the dependent variable. The dummy variables after_wc, in_sp and interaction term after_wc_did, as well as the independent climate variables of temperature, humidity and windspeed each have p-values below 0.05, so we can reject the null hypothesis. Station IDs 6, 22, 33, 34 and 54 each have p-values ranging from 0.019-0.027, but station 39 has a p-value of 0.057. This variation can be explained due to the fact that station ID 39 is the Pico do Jaraguá mountain, which is subject to different climate and pollution conditions than the rest of the geographical area. Overall, the p-values and R-squared tell that we can say each independent variable has at least some correlation with the log amount of ozone in São Paulo, and that the independent variables can be used to account for about 40% of the variation in ozone level. However, due to collinearity between climate independent variables, the coefficients on the variables may be insignificant when the regression as a whole is significant. 
+
+# Conclusion
+
+  Major city hubs such as Mexico City, Rio de Janeiro, and Paris (as well as several cities in the United States) have implemented BRT systems or other similar public transport modes as part of larger city-wide revamping projects to accommodate large international events such as the Olympics and the FIFA World Cup (Drew, 2015). São Paulo, the largest city by population in Brazil, is a place which experiences extreme variation in climate factors and the urban heat island phenomenon, exacerbated by large amounts of ground-level ozone. In order to analyze the effectiveness of BRT systems as a means of reducing ozone, this study runs a difference-in-difference regression model on the log amount of ozone in São Paulo using dummies for time and place control variables. 
+  If the independent variables of temperature, windspeed, humidity, and station id are taken into account with average, maximum and minimum ozone levels, we observe both positive and negative relationships between the independent and dependent variables. The adjusted R-squared in the model is 38.3%, meaning that roughly 40% of the variation in the data is explained with the model. This leaves almost two-thirds of unexplained variation in ozone levels open to interpretation and other independent variables which were not covered in this project. Alternative independent variables would include climate variables such as rainfall. In addition to other weather variables, economic data from the BRT system itself such as number of daily passengers, modal split of transportation, and annual GHG emissions from the buses themselves can be taken into account in future studies. This approach did not consider direct annual BRT emissions or other inputs of ozone, such as building and infrastructural emissions, due to time constraints. It is important to note that due to this lack of data, any ozone level reduction cannot be solely attributed to the variables studied in this project. 
+  This paper concludes that there are currently higher levels of ozone in the city of São Paulo than the rest of the region due to the positive coefficients on both dummy variables. However, the interaction term after_wc_did holds a negative coefficient, indicating that the combination of these two variables (Ozone in the city after 2015) has a weaker effect than the effect resulting from the individual variables. A more robust model for this type of analysis would be an atmospheric dispersion model, which is an extension of a linear regression model that uses more parameters on emissions and climatological inputs to predict ambient air concentrations of pollutants. An even further extension of this project would be to analyze tourist and citizen transportation data in order to determine whether the BRT system incentivized public over private transport for the city. 
+  
+  
+# References
+
+ Baghini, Mojtaba Shojaei et al. “Bus Rapid Transit (BRT) System Impacts to Environmental Quality.” (2014).
+ “68% Of the World Population Projected to Live in Urban Areas by 2050, Says UN | UN DESA Department of Economic and Social Affairs.” United Nations. United Nations. Accessed April 26, 2020. https://www.un.org/development/desa/en/news/population/2018-revision-of-world-urbanization-prospects.html.
+ Koenig, Jane Q. “Health Effects of Particulate Matter.” Health Effects of Ambient Air Pollution, 2000, 115–37. https://doi.org/10.1007/978-1-4615-4569-9_10.
+ Reed, Drew. “How Curitiba's BRT Stations Sparked a Transport Revolution – a History of Cities in 50 Buildings, Day 43.” The Guardian, Guardian News and Media, 26 May 2015, www.theguardian.com/cities/2015/may/26/curitiba-brazil-brt-transport-revolution-history-cities-50-buildings
+ “Brazil: Air Quality Standards.” Transport Policy. Accessed May 1, 2020. https://www.transportpolicy.net/standard/brazil-air-quality-standards/.
+“Ground-Level Ozone (Smog) Information | New England | US EPA.” EPA. Environmental Protection Agency, September 27, 2018. https://www3.epa.gov/region1/airquality/index.html.
+ Zimbalist, Andrew S. Circus Maximus: the Economic Gamble behind Hosting the Olympics and the World Cup. Washington, D.C.: Brookings Institution Press, 2015.
+ National Geographic Society. “Urban Heat Island.” National Geographic Society, October 9, 2012. https://www.nationalgeographic.org/encyclopedia/urban-heat-island/.
+  Andrii Shelestov, Andrii Kolotii, Tatiana Borisova, Olena Turos, Gennadi Milinevsky, Igor Gomilko, Tatyana Bulanay, Oleg Fedorov, Leonid Shumilo, Liudmyla Pidgorodetska, Liudmyla Kolos, Arsenii Borysov, Natalia Pozdnyakova, Alexander Chunikhin, Marina Dudarenko, Arina Petrosian, Vassyl Danylevsky, Natalia Miatselskaya & Vasyl Choliy (2020) Essential variables for air quality estimation, International Journal of Digital Earth, 13:2, 278-298, DOI: 10.1080/17538947.2019.1620881
+ “Ambient Air Pollution: Health Impacts.” World Health Organization. World Health Organization, September 25, 2018. https://www.who.int/airpollution/ambient/health-impacts/en/.
+  Hironori. “Cost-Benefit Analysis for the Introduction of a Bus Rapid ...” Accessed April 4, 2020. https://www.researchgate.net/profile/Hironori_Kato4/publication/255019698_Cost-Benefit_Analysis_for_the_Introduction_of_a_Bus_Rapid_Transit_System_in_Yangon_Myanmar/links/5552eeaa08ae980ca606c8c2.pdf?inViewer=true&disableCoverPage=true&origin=publication_detail.
+Ibid 1. 
+  Imam, Rana, and Ahmad Jamrah. "Energy consumption and environmental impacts of bus rapid transit (BRT) systems." Jordan Journal of Civil Engineering 159.699 (2012): 1-12.
+  Vincent, William, and Lisa Jerram. “The Potential for Bus Rapid Transit to Reduce Transportation-Related CO2 Emissions.” Journal of Public Transportation, vol. 9, no. 3, 2006, pp. 219–237., doi:10.5038/2375-0901.9.3.12.
+  Bel, G., & Holst, M. (2018). Evaluation of the impact of Bus Rapid Transit on air pollution in Mexico City. Transport Policy, Vol. 63, pp. 209-220.
+  Cui, Shenghui, Hongbin Niu, Wei Wang, Guoqin Zhang, Lijie Gao, and Jianyi Lin. “Carbon Footprint Analysis of the Bus Rapid Transit (BRT) System: a Case Study of Xiamen City.” International Journal of Sustainable Development & World Ecology 17, no. 4 (2010): 329–37. https://doi.org/10.1080/13504509.2010.490657.
+Ibid 4. 
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
