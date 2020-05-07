@@ -96,7 +96,7 @@ combined_data <- new_ozone_data %>%
 model_sp <- lm(log_ozone ~ after_wc + in_sp + after_wc_did + max_temp + min_temp + avg_temp + mean_humidity + mean_windspeed + as.factor(id), data = combined_data)
 stargazer(model_sp, omit = "as.factor")
 ```
-**notes = Monitor fixed effects included for id (weather station), but not reported here.**
+**notes = Monitor fixed effects included for id (weather station), but not reported here.** 
 
 ```{r}
 export_summary_table(dfSummary(model_sp))
