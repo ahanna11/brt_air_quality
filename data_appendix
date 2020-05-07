@@ -169,3 +169,5 @@ formattable(var_desc, align =c("c","c"),
 ```
 
 #Discussion of Data
+
+Both climate and air pollution datasets had to be modified by professor Sayre, as the original raw data files did not read properly into my computer. The datasets were downloaded from the website above and extracted using the methods and code described.  
